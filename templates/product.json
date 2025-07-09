@@ -1,0 +1,153 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "square"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "text_eq9F3j": {
+          "type": "text",
+          "settings": {
+            "text": "AVAILABILITY",
+            "text_style": "body"
+          }
+        },
+        "inventory_f7rdYt": {
+          "type": "inventory",
+          "settings": {
+            "text_style": "uppercase",
+            "inventory_threshold": 10,
+            "show_inventory_quantity": false
+          }
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "collapsible_tab_wCTXRQ": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "PRODUCT DESCRIPTION",
+            "icon": "none",
+            "content": "<p>Short sleeve jersey cobalt blue t-shirt. Slightly oversized fit in a medium weight cotton. Ribbed crewneck collar. Sixteenine The Debut T-Shirt graphic branding to the rear and chest. This blue t-shirt is finished with our metal bar logo to the hem.</p><ul><li>Cobalt Blue T-Shirt</li><li>Screen Printed</li><li>Round Neck</li><li>Short Sleeves</li></ul><p>Composition: 100% Cotton<br/>Made in Portugal</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_efKW8t": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "RETURN POLICY",
+            "icon": "none",
+            "content": "<p>At <strong>SIXTEENINE</strong> we want you to love your new purchase, but we understand that sometimes things don’t work out. If you're not completely satisfied, you can return your items within <strong>14 days </strong>of receiving them. </p><p><strong>Note:</strong> Please ensure that returns are sent back within the 14-day window. Unfortunately, we can't accept items that are <strong>worn, washed, or damaged.</strong> </p><p>We strive to make returns as easy and stress-free as possible, but if you have any questions or need assistance, don’t hesitate to reach out to us.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_yKikgt": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "PRODUCT FAQ’S",
+            "icon": "none",
+            "content": "<h3><strong>What fabric is used in the t-shirts ?</strong></h3><p>Most of the t-shirts in our product catalogue are made of 100% cotton.</p><h3>What kind of fit does this t-shirt have ?</h3><p>This t-shirt offers an oversized fit that’s perfect for a relaxed look. For a less roomy fit, size down for a more standard shape.</p><h3>Are there any washing or care instructions ?</h3><p>We recommend you wash your t-shirts inside out at 30 degrees Celsius. We also recommend not to tumble dry our t-shirts. </p>",
+            "page": ""
+          }
+        },
+        "popup_jYymVY": {
+          "type": "popup",
+          "settings": {
+            "text": "SIZE GUIDE",
+            "page": "size-guide"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "variant_picker",
+        "buy_buttons",
+        "text_eq9F3j",
+        "inventory_f7rdYt",
+        "description",
+        "collapsible_tab_wCTXRQ",
+        "collapsible_tab_efKW8t",
+        "collapsible_tab_yKikgt",
+        "popup_jYymVY"
+      ],
+      "custom_css": [
+        "h1 {font-size: 2rem; font-weight: 600;}",
+        ".product__tax {display: none;}",
+        ".product-form__submit span {text-transform: uppercase;}",
+        ".product__title {text-transform: uppercase;}"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "cover",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "mobile_thumbnails": "show",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "custom_css": [
+        ".related-products__heading {font-size: 1.5rem; font-style: normal;}"
+      ],
+      "settings": {
+        "heading": "EXPLORE SIMILAR STYLES",
+        "heading_size": "h2",
+        "products_to_show": 3,
+        "columns_desktop": 3,
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products"
+  ]
+}

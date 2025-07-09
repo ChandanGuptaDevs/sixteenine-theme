@@ -1,0 +1,213 @@
+<style>
+  .image-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .image-modal.active {
+    display: flex;
+    opacity: 1;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image-modal__content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  .image-modal__image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+
+  .image-modal__close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  }
+
+  .image-modal__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);  /* Darker background */
+    border: 2px solid rgba(255, 255, 255, 0.5);  /* White border */
+    color: white;
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border-radius: 50%;  /* Makes the buttons circular */
+    z-index: 10001;  /* Ensure buttons are always visible */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);  /* Add shadow for depth */
+  }
+
+  .image-modal__nav:hover {
+    /* background: rgba(255, 255, 255, 0.2); */
+    background: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-50%) scale(1.1);  /* Slight grow effect on hover */
+  }
+
+  .image-modal__nav--prev {
+    left: 20px;
+  }
+
+  .image-modal__nav--next {
+    right: 20px;
+  }
+
+  .image-modal__nav svg {
+    width: 24px;
+    height: 24px;
+    stroke: white;
+    stroke-width: 2px;
+  }
+
+  /* Mobile-specific styles */
+@media screen and (max-width: 749px) {
+  .image-modal__nav {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.7);  /* Darker background for mobile */
+    border-width: 1px;
+  }
+
+  .image-modal__nav--prev {
+    left: 10px;
+  }
+
+  .image-modal__nav--next {
+    right: 10px;
+  }
+}
+</style>
+
+<div id="imageModal" class="image-modal">
+  <button class="image-modal__close">&times;</button>
+  <button class="image-modal__nav image-modal__nav--prev">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </button>
+  <div class="image-modal__content">
+    <img class="image-modal__image" src="" alt="" width="1920" height="2400">
+  </div>
+  <button class="image-modal__nav image-modal__nav--next">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+  </button>
+</div>
+
+<script>
+  class ImageModal {
+    constructor() {
+      this.modal = document.getElementById('imageModal');
+      this.modalImage = this.modal.querySelector('.image-modal__image');
+      this.closeButton = this.modal.querySelector('.image-modal__close');
+      this.prevButton = this.modal.querySelector('.image-modal__nav--prev');
+      this.nextButton = this.modal.querySelector('.image-modal__nav--next');
+      this.currentIndex = 0;
+      this.productImages = [];
+      this.init();
+    }
+
+    init() {
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.product-modal-trigger');
+        if (trigger) {
+          e.preventDefault();
+          const productId = trigger.getAttribute('data-product-id');
+          
+          // Get all images for this specific product
+          this.productImages = Array.from(
+            document.querySelectorAll(`.product-modal-trigger[data-product-id="${productId}"]`)
+          ).map(trigger => trigger.getAttribute('data-image-url'));
+          
+          const imageUrl = trigger.getAttribute('data-image-url');
+          this.currentIndex = this.productImages.indexOf(imageUrl);
+          this.open(imageUrl);
+          
+          // Show/hide navigation based on image count
+          this.updateNavigationVisibility();
+        }
+      });
+
+      this.prevButton.addEventListener('click', () => this.navigate(-1));
+      this.nextButton.addEventListener('click', () => this.navigate(1));
+      this.closeButton.addEventListener('click', () => this.close());
+
+      this.modal.addEventListener('click', (e) => {
+        if (e.target === this.modal) {
+          this.close();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!this.modal.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') this.close();
+        if (e.key === 'ArrowLeft') this.navigate(-1);
+        if (e.key === 'ArrowRight') this.navigate(1);
+      });
+    }
+
+    updateNavigationVisibility() {
+      const hasMultipleImages = this.productImages.length > 1;
+      this.prevButton.style.display = hasMultipleImages ? 'flex' : 'none';
+      this.nextButton.style.display = hasMultipleImages ? 'flex' : 'none';
+    }
+
+    navigate(direction) {
+      this.currentIndex = (this.currentIndex + direction + this.productImages.length) % this.productImages.length;
+      this.modalImage.src = this.productImages[this.currentIndex];
+    }
+
+    open(imageUrl) {
+      this.modalImage.src = imageUrl;
+      this.modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    close() {
+      this.modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    new ImageModal();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Image Modal",
+  "settings": []
+}
+{% endschema %}

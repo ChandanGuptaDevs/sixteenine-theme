@@ -1,0 +1,19 @@
+# Shopify CLI
+.shopify/
+
+# Environment files
+.env
+.env.local
+
+# Node modules
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Shopify generated files
+config/settings_data.json
+
+# Logs
+*.log

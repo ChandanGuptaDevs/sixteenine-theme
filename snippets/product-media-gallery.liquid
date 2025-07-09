@@ -1,0 +1,258 @@
+{% comment %}
+  Product media gallery with enhanced zoom and mobile optimization
+{% endcomment %}
+
+<div class="product-media-container">
+  <div class="product-main-image">
+    {% for media in product.media %}
+      <div class="media-slide {% if forloop.first %}active{% endif %}" data-slide-index="{{ forloop.index0 }}">
+        <div class="zoom-container">
+          <img
+            srcset="
+              {%- if media.preview_image.width >= 165 -%}{{ media.preview_image | image_url: width: 165 }} 165w,{%- endif -%}
+              {%- if media.preview_image.width >= 360 -%}{{ media.preview_image | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if media.preview_image.width >= 533 -%}{{ media.preview_image | image_url: width: 533 }} 533w,{%- endif -%}
+              {%- if media.preview_image.width >= 720 -%}{{ media.preview_image | image_url: width: 720 }} 720w,{%- endif -%}
+              {%- if media.preview_image.width >= 940 -%}{{ media.preview_image | image_url: width: 940 }} 940w,{%- endif -%}
+              {%- if media.preview_image.width >= 1066 -%}{{ media.preview_image | image_url: width: 1066 }} 1066w,{%- endif -%}
+              {{ media.preview_image | image_url }} {{ media.preview_image.width }}w
+            "
+            src="{{ media.preview_image | image_url: width: 1066 }}"
+            sizes="(min-width: 1200px) 500px, (min-width: 990px) calc(45.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), 100vw"
+            alt="{{ media.alt | escape }}"
+            {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}
+            width="{{ media.preview_image.width }}"
+            height="{{ media.preview_image.height }}"
+            class="product-featured-image"
+          >
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="gallery-navigation">
+    <button class="nav-button prev" aria-label="Previous image">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+    <button class="nav-button next" aria-label="Next image">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="gallery-dots">
+    {% for media in product.media %}
+      <button class="dot-indicator {% if forloop.first %}active{% endif %}" 
+              data-index="{{ forloop.index0 }}"
+              aria-label="Go to image {{ forloop.index }}">
+      </button>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .product-media-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-main-image {
+    width: 100%;
+    /* padding-top: 100%; */
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+
+  .media-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.7s ease-in-out;
+  }
+
+  .media-slide.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .zoom-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .product-featured-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    margin: 0;
+    padding: 0;
+    transition: transform 0.8s ease-in-out;
+  }
+
+  /* @media (min-width: 750px) {
+    .zoom-container:hover .product-featured-image {
+      transform: scale(2);
+      cursor: zoom-in;
+    }
+  } */
+
+  @media (max-width: 749px) {
+    .product-main-image {
+      aspect-ratio: 4 / 5;
+    }
+
+    .product-featured-image {
+      object-fit: cover;
+      transform: scale(1.1);
+    }
+    
+    .gallery-dots {
+      bottom: 10px;
+    }
+  }
+
+  .gallery-navigation {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    pointer-events: none;
+    z-index: 3;
+    margin: 0 40px;
+  }
+
+  .nav-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    /* Lightened background */
+    background: rgba(255, 255, 255, 0.7);
+    /* Lightened border */
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: all 0.3s ease;
+    z-index: 2;
+  }
+
+  .nav-button svg {
+    /* Lightened stroke color */
+    stroke: rgba(0, 0, 0, 0.6);
+  }
+
+  .nav-button:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .gallery-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 0;
+    z-index: 2;
+  }
+
+  .dot-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot-indicator.active {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.2);
+  }
+
+  .product__media-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 749px) {
+    .gallery-navigation {
+      margin: 0 24px;
+    }
+
+    .nav-button {
+      width: 36px;
+      height: 36px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const container = document.querySelector('.product-media-container');
+    const slides = container.querySelectorAll('.media-slide');
+    const dots = container.querySelectorAll('.dot-indicator');
+    const prevButton = container.querySelector('.nav-button.prev');
+    const nextButton = container.querySelector('.nav-button.next');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+      slides[index].classList.add('active');
+      dots[index].classList.add('active');
+    }
+
+    if (prevButton && nextButton && slides.length > 0) {
+      prevButton.addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+      });
+
+      nextButton.addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+      });
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          currentSlide = index;
+          showSlide(currentSlide);
+        });
+      });
+    }
+  });
+</script>

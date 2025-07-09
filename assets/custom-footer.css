@@ -1,0 +1,118 @@
+/* Desktop styles */
+.footer-block--newsletter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Add 69 text above newsletter heading */
+.footer-block__heading::before {
+  content: "SIXTEENINE";
+  display: block;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #121212;
+  margin-bottom: 15px;
+}
+
+/* Social icons container */
+.footer__list-social {
+  position: relative;
+  display: flex;
+  /* gap: 15px; */
+  /* margin-top: 20px !important; */
+}
+
+/* Add "SPREAD LOVE WITH US" text */
+.footer__list-social::before {
+  content: "SPREAD LOVE WITH US";
+  position: absolute;
+  top: -30px;
+  left: 5px;
+  width: 100%;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-body-family);
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .footer-block--newsletter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 15px;
+  }
+
+  .footer-block__heading::before {
+    display: block;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .footer-block__heading {
+    margin: 15px 0;
+    text-align: center;
+  }
+
+  .footer-block__newsletter {
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .newsletter-form__field-wrapper {
+    width: 100%;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .field__input {
+    width: 100%;
+    max-width: none;
+  }
+
+  .footer__list-social {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 15px !important;
+    padding-top: 40px;
+  }
+
+  .footer__list-social::before {
+    top: 0;
+    text-align: center;
+  }
+}
+
+/* Additional mobile refinements */
+@media screen and (max-width: 480px) {
+  .footer-block--newsletter {
+    padding: 15px 10px;
+  }
+
+  .footer-block__heading::before {
+    font-size: 11px;
+    margin-bottom: 15px;
+  }
+
+  .footer-block__heading {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+
+  .footer__list-social::before {
+    font-size: 11px;
+  }
+
+  .footer__list-social {
+    gap: 6px;
+  }
+}
