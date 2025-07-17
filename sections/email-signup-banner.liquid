@@ -53,11 +53,17 @@
           height="{{ section.settings.image.width | divided_by: section.settings.image.aspect_ratio }}"
         >
       {%- else -%}
-        {{- 'email-signup-banner-background.svg' | inline_asset_content -}}
-        {{- 'email-signup-banner-background-mobile.svg' | inline_asset_content -}}
+        <!-- Default background image if no image is uploaded -->
+        <img
+          src="https://cdn.shopify.com/s/files/1/0575/5856/4913/files/banner-69.webp?v=1752698499"
+          alt="Club 1984 Background"
+          width="1920"
+          height="1080"
+        >
       {%- endif -%}
     </div>
   {%- endif -%}
+  
   <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width">
     <div class="email-signup-banner__box banner__box newsletter newsletter__wrapper isolate{% if section.settings.show_background_image == false %} email-signup-banner__box--no-image{% endif %} content-container color-{{ section.settings.color_scheme }} gradient content-container--full-width-mobile">
       {%- for block in section.blocks -%}
@@ -93,22 +99,20 @@
                       {% elsif form.posted_successfully? %}
                         aria-describedby="Newsletter-success--{{ section.id }}"
                       {% endif %}
-                      placeholder="{{ 'newsletter.label' | t }}"
+                      placeholder="ENTER EMAIL ADDRESS"
                       required
                     >
                     <label class="field__label" for="NewsletterForm--{{ section.id }}">
-                      {{ 'newsletter.label' | t }}
+                      Email
                     </label>
                     <button
                       type="submit"
                       class="newsletter-form__button field__button"
                       name="commit"
                       id="Subscribe"
-                      aria-label="{{ 'newsletter.button_label' | t }}"
+                      aria-label="Sign Up"
                     >
-                      <span class="svg-wrapper">
-                        {{- 'icon-arrow.svg' | inline_asset_content -}}
-                      </span>
+                      SIGN UP
                     </button>
                   </div>
                   {%- if form.errors -%}
@@ -117,7 +121,7 @@
                         {{- 'icon-error.svg' | inline_asset_content -}}
                       </span>
                       {{- form.errors.translated_fields.email | capitalize }}
-                      {{ form.errors.messages.email -}}
+                      {{- form.errors.messages.email -}}
                     </small>
                   {%- endif -%}
                 </div>
@@ -131,7 +135,7 @@
                     <span class="svg-wrapper">
                       {{- 'icon-success.svg' | inline_asset_content -}}
                     </span>
-                    {{- 'newsletter.success' | t }}
+                    Welcome to the Club. You'll be emailed a 1 hour early access password on the day of the drop.
                   </h3>
                 {%- endif -%}
               {% endform %}
@@ -140,22 +144,86 @@
       {%- endfor -%}
     </div>
   </div>
+
+  <!-- Footer Section with Links and Password Entry -->
+  <div class="email-signup-banner__footer">
+    <div class="footer-links">
+      <a href="/pages/shipping-policy" class="footer-link">SHIPPING POLICY</a>
+      <a href="/pages/contact" class="footer-link">CONTACT US</a>
+    </div>
+    
+    <!-- Password Entry Button -->
+    <button class="password-entry-btn" onclick="openPasswordModal()">
+      ENTER USING PASSWORD
+    </button>
+  </div>
+
+  <!-- Password Modal -->
+  <div id="passwordModal" class="password-modal" style="display: none;">
+    <div class="password-modal-content">
+      <span class="close-modal" onclick="closePasswordModal()">&times;</span>
+      <h3>Enter store using password:</h3>
+      <form action="/password" method="post" class="password-form">
+        <input type="hidden" name="form_type" value="storefront_password">
+        <input type="hidden" name="utf8" value="✓">
+        <div class="password-field">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            class="password-input"
+            placeholder="Your password"
+            required
+          >
+          <button type="submit" class="password-submit-btn">ENTER</button>
+        </div>
+        {%- if form.errors -%}
+          <div class="password-error">
+            Incorrect password. Please try again.
+          </div>
+        {%- endif -%}
+      </form>
+      <!-- Are you the store owner? <a href="/admin" target="_blank">Login here</a> -->
+    </div>
+  </div>
 </div>
+
+<script>
+function openPasswordModal() {
+  document.getElementById('passwordModal').style.display = 'flex';
+  document.getElementById('password').focus();
+}
+
+function closePasswordModal() {
+  document.getElementById('passwordModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('passwordModal');
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closePasswordModal();
+  }
+});
+</script>
 
 {% schema %}
 {
-  "name": "t:sections.email-signup-banner.name",
+  "name": "Email signup banner",
   "tag": "section",
   "class": "section",
   "settings": [
     {
-      "type": "paragraph",
-      "content": "t:sections.email-signup-banner.settings.paragraph.content"
-    },
-    {
       "type": "image_picker",
       "id": "image",
-      "label": "t:sections.email-signup-banner.settings.image.label"
+      "label": "Background image"
     },
     {
       "type": "range",
@@ -164,13 +232,13 @@
       "max": 100,
       "step": 10,
       "unit": "%",
-      "label": "t:sections.email-signup-banner.settings.image_overlay_opacity.label",
+      "label": "Image overlay opacity",
       "default": 0
     },
     {
       "type": "checkbox",
       "id": "show_background_image",
-      "label": "t:sections.email-signup-banner.settings.show_background_image.label",
+      "label": "Show background image",
       "default": true
     },
     {
@@ -178,25 +246,20 @@
       "id": "image_height",
       "options": [
         {
-          "value": "adapt-image",
-          "label": "t:sections.email-signup-banner.settings.image_height.options__1.label"
-        },
-        {
           "value": "small",
-          "label": "t:sections.email-signup-banner.settings.image_height.options__2.label"
+          "label": "Small"
         },
         {
           "value": "medium",
-          "label": "t:sections.email-signup-banner.settings.image_height.options__3.label"
+          "label": "Medium"
         },
         {
           "value": "large",
-          "label": "t:sections.email-signup-banner.settings.image_height.options__4.label"
+          "label": "Large"
         }
       ],
       "default": "medium",
-      "label": "t:sections.email-signup-banner.settings.image_height.label",
-      "info": "t:sections.email-signup-banner.settings.image_height.info"
+      "label": "Image height"
     },
     {
       "type": "select",
@@ -204,49 +267,49 @@
       "options": [
         {
           "value": "top-left",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__1.label"
+          "label": "Top left"
         },
         {
           "value": "top-center",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__2.label"
+          "label": "Top center"
         },
         {
           "value": "top-right",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__3.label"
+          "label": "Top right"
         },
         {
           "value": "middle-left",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__4.label"
+          "label": "Middle left"
         },
         {
           "value": "middle-center",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__5.label"
+          "label": "Middle center"
         },
         {
           "value": "middle-right",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__6.label"
+          "label": "Middle right"
         },
         {
           "value": "bottom-left",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__7.label"
+          "label": "Bottom left"
         },
         {
           "value": "bottom-center",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__8.label"
+          "label": "Bottom center"
         },
         {
           "value": "bottom-right",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_position.options__9.label"
+          "label": "Bottom right"
         }
       ],
       "default": "middle-center",
-      "label": "t:sections.email-signup-banner.settings.desktop_content_position.label"
+      "label": "Desktop content position"
     },
     {
       "type": "checkbox",
       "id": "show_text_box",
       "default": true,
-      "label": "t:sections.email-signup-banner.settings.show_text_box.label"
+      "label": "Show text box"
     },
     {
       "type": "select",
@@ -254,30 +317,25 @@
       "options": [
         {
           "value": "left",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_alignment.options__1.label"
+          "label": "Left"
         },
         {
           "value": "center",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_alignment.options__2.label"
+          "label": "Center"
         },
         {
           "value": "right",
-          "label": "t:sections.email-signup-banner.settings.desktop_content_alignment.options__3.label"
+          "label": "Right"
         }
       ],
       "default": "center",
-      "label": "t:sections.email-signup-banner.settings.desktop_content_alignment.label"
+      "label": "Desktop content alignment"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "info": "t:sections.email-signup-banner.settings.color_scheme.info",
+      "label": "Color scheme",
       "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.email-signup-banner.settings.header.content"
     },
     {
       "type": "select",
@@ -285,38 +343,38 @@
       "options": [
         {
           "value": "left",
-          "label": "t:sections.email-signup-banner.settings.mobile_content_alignment.options__1.label"
+          "label": "Left"
         },
         {
           "value": "center",
-          "label": "t:sections.email-signup-banner.settings.mobile_content_alignment.options__2.label"
+          "label": "Center"
         },
         {
           "value": "right",
-          "label": "t:sections.email-signup-banner.settings.mobile_content_alignment.options__3.label"
+          "label": "Right"
         }
       ],
       "default": "center",
-      "label": "t:sections.email-signup-banner.settings.mobile_content_alignment.label"
+      "label": "Mobile content alignment"
     },
     {
       "type": "checkbox",
       "id": "show_text_below",
       "default": true,
-      "label": "t:sections.email-signup-banner.settings.show_text_below.label"
+      "label": "Show text below image on mobile"
     }
   ],
   "blocks": [
     {
       "type": "heading",
-      "name": "t:sections.email-signup-banner.blocks.heading.name",
+      "name": "Heading",
       "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "heading",
-          "default": "t:sections.email-signup-banner.blocks.heading.settings.heading.default",
-          "label": "t:sections.email-signup-banner.blocks.heading.settings.heading.label"
+          "default": "CLUB 1984",
+          "label": "Heading"
         },
         {
           "type": "select",
@@ -324,40 +382,32 @@
           "options": [
             {
               "value": "h2",
-              "label": "t:sections.all.heading_size.options__1.label"
+              "label": "Small"
             },
             {
               "value": "h1",
-              "label": "t:sections.all.heading_size.options__2.label"
+              "label": "Medium"
             },
             {
               "value": "h0",
-              "label": "t:sections.all.heading_size.options__3.label"
-            },
-            {
-              "value": "hxl",
-              "label": "t:sections.all.heading_size.options__4.label"
-            },
-            {
-              "value": "hxxl",
-              "label": "t:sections.all.heading_size.options__5.label"
+              "label": "Large"
             }
           ],
           "default": "h1",
-          "label": "t:sections.all.heading_size.label"
+          "label": "Heading size"
         }
       ]
     },
     {
       "type": "paragraph",
-      "name": "t:sections.email-signup-banner.blocks.paragraph.name",
+      "name": "Text",
       "limit": 1,
       "settings": [
         {
           "type": "richtext",
           "id": "text",
-          "default": "t:sections.email-signup-banner.blocks.paragraph.settings.paragraph.default",
-          "label": "t:sections.email-signup-banner.blocks.paragraph.settings.paragraph.label"
+          "default": "<p><em>The Archive Sale</em></p><p><strong>JULY_____23RD</strong></p><p>SIGN UP BELOW FOR EARLY ACCESS</p>",
+          "label": "Description"
         },
         {
           "type": "select",
@@ -365,27 +415,27 @@
           "options": [
             {
               "value": "body",
-              "label": "t:sections.email-signup-banner.blocks.paragraph.settings.text_style.options__1.label"
+              "label": "Body"
             },
             {
               "value": "subtitle",
-              "label": "t:sections.email-signup-banner.blocks.paragraph.settings.text_style.options__2.label"
+              "label": "Subtitle"
             }
           ],
           "default": "body",
-          "label": "t:sections.email-signup-banner.blocks.paragraph.settings.text_style.label"
+          "label": "Text style"
         }
       ]
     },
     {
       "type": "email_form",
-      "name": "t:sections.email-signup-banner.blocks.email_form.name",
+      "name": "Email form",
       "limit": 1
     }
   ],
   "presets": [
     {
-      "name": "t:sections.email-signup-banner.presets.name",
+      "name": "Email signup banner",
       "blocks": [
         {
           "type": "heading"
