@@ -61,7 +61,7 @@
   font-size: 4rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0em;
   text-transform: uppercase;
   color: white !important;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -128,11 +128,14 @@
   border: none;
   border-right: 2px solid white;
   padding: 15px 20px;
-  font-size: 1rem;
+  font-size: 1.45rem;
   flex: 1;
-  text-transform: uppercase;
+  text-transform: none !important;
   letter-spacing: 0.05em;
   outline: none;
+  text-align: left;
+  font-family: inherit;
+  min-width: 250px;
 }
 
 .email-signup-banner .field__input::placeholder {
@@ -144,6 +147,18 @@
 .email-signup-banner .field__input:focus {
   background: rgba(255, 255, 255, 0.2) !important;
   color: white !important;
+}
+
+/* Fix autofill styling */
+.email-signup-banner .field__input:-webkit-autofill,
+.email-signup-banner .field__input:-webkit-autofill:hover,
+.email-signup-banner .field__input:-webkit-autofill:focus,
+.email-signup-banner .field__input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-text-fill-color: white !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .email-signup-banner .field__label {
@@ -166,6 +181,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .email-signup-banner .newsletter-form__button:hover,
@@ -401,6 +417,55 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  /* Full screen mobile fix */
+  .password {
+    height: 100vh;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .password-main {
+    height: 100vh;
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .email-signup-banner {
+    height: 100vh;
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .email-signup-banner .banner__media {
+    height: 100vh;
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .email-signup-banner .banner__media img {
+    height: 100vh;
+    min-height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+    object-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
   .email-signup-banner__heading {
     font-size: 2.5rem;
   }
@@ -501,6 +566,15 @@
   }
 
   .email-signup-banner__footer {
-    bottom: 10px;
+    bottom: 80px;
+  }
+
+  .email-signup-banner .newsletter-form__button,
+  .email-signup-banner .field__button {
+    min-width: 100px;
+  }
+
+  .email-signup-banner .field__input {
+    font-size: 1rem;
   }
 }
