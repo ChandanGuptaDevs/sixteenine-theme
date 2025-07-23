@@ -94,7 +94,9 @@
 }
 
 .email-signup-banner .newsletter__subheading strong {
+  font-family: "Inter", sans-serif;
   font-weight: bold;
+  font-style: normal;
   font-size: 2.5rem;
   display: block;
   margin: 1rem 0;
@@ -480,6 +482,7 @@
 
   .email-signup-banner .newsletter__subheading strong {
     font-size: 1.8rem;
+    white-space: nowrap;
   }
 
   .email-signup-banner .newsletter-form__field-wrapper {
@@ -562,7 +565,8 @@
   }
 
   .email-signup-banner .newsletter__subheading strong {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    white-space: nowrap;
   }
 
   .email-signup-banner__footer {

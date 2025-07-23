@@ -55,8 +55,8 @@
       {%- else -%}
         <!-- Default background image if no image is uploaded -->
         <img
-          src="https://cdn.shopify.com/s/files/1/0575/5856/4913/files/banner-69.webp?v=1752698499"
-          alt="Club 1984 Background"
+          src="https://cdn.shopify.com/s/files/1/0575/5856/4913/files/the-debut.webp?v=1753193507"
+          alt="SIXTEENINE Background"
           width="1920"
           height="1080"
         >
@@ -80,6 +80,7 @@
             <div {{ block.shopify_attributes }}>
               {% form 'customer', class: 'newsletter-form' %}
                 <input type="hidden" name="contact[tags]" value="newsletter">
+                {% comment %} <input type="hidden" name="contact[accepts_marketing]" value="true"> {% endcomment %}
                 <div class="newsletter-form__field-wrapper">
                   <div class="field">
                     <input
@@ -135,7 +136,7 @@
                     <span class="svg-wrapper">
                       {{- 'icon-success.svg' | inline_asset_content -}}
                     </span>
-                    Welcome to the Club. You'll be emailed a 1 hour early access password on the day of the drop.
+                    Welcome to the Club! You're now registered for early access. Follow our socials for drop announcements!
                   </h3>
                 {%- endif -%}
               {% endform %}
